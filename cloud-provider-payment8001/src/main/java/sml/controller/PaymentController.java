@@ -1,10 +1,7 @@
 package sml.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import sml.entities.CommonResult;
 import sml.entities.Payment;
 import sml.service.PaymentService;
@@ -19,7 +16,7 @@ public class PaymentController {
     private PaymentService paymentService;
 
     @PostMapping("/payment/create")
-    public CommonResult create(Payment payment){
+    public CommonResult create(@RequestBody Payment payment){
         int result = paymentService.create(payment);
         log.info("*****插入结果："+result);
 
