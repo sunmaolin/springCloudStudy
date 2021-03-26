@@ -2,12 +2,15 @@ package sml.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.*;
 import sml.entities.CommonResult;
 import sml.entities.Payment;
 import sml.service.PaymentService;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -18,6 +21,9 @@ public class PaymentController {
 
     @Value("${server.port}")
     private String serverPort;
+
+    @Resource
+    private DiscoveryClient discoveryClient;
 
     @PostMapping("/payment/create")
     public CommonResult create(@RequestBody Payment payment){
@@ -41,6 +47,22 @@ public class PaymentController {
         }else{
             return new CommonResult(444,"没有对应记录，查询ID:"+id,null);
         }
+    }
+
+    @GetMapping("/payment/discovery")
+    public Object discovery(){
+
+        List<String> services = discoveryClient.getServices();
+        for(String element : services){
+            log.info("********element:"+element);
+        }
+
+        List<ServiceInstance> instances = discoveryClient.getInstances("CLOUD-PAYMENT-SERVICE");
+        for(ServiceInstance instance : instances){
+            log.info(instance.getServiceId()+"\t"+instance.getHost()+"\t"+instance.getPort()+"\n"+instance.getUri());
+        }
+
+        return this.discoveryClient;
     }
 
 }
