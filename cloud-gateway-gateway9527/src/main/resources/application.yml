@@ -21,6 +21,13 @@ spring:
           uri: lb://cloud-payment-service   #匹配后提供服务的路由地址
           predicates:
             - Path=/payment/lb/**
+#            - After=2021-04-02T22:54:53.369+08:00[Asia/Shanghai]  #这个时间之后的请求才好使,下面俩个一样
+#            - Before=2021-04-02T22:54:53.369+08:00[Asia/Shanghai]
+#            - Between=2021-04-02T22:54:53.369+08:00[Asia/Shanghai],2021-04-02T22:54:53.369+08:00[Asia/Shanghai]
+#            - Cookie=username,sml   #俩个参数，第一个是cookie的键username，第二个是value的正则表达式，这里为sml
+#            - Header=X-Request-Id,\d+
+#            - Method=GET
+#            - HOST=**.atguigu.com
 
 eureka:
   instance:
